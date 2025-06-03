@@ -334,9 +334,15 @@
         const charCounter = document.querySelector('.char-counter');
         const descriptionDisplay = document.getElementById('description-display');
         
+        // משתנה לשמירת התיאור (רק במהלך הסשן)
+        let savedDescription = '';
+        
         descriptionTextarea.addEventListener('input', function() {
             const length = this.value.length;
             charCount.textContent = length;
+            
+            // שמירה במשתנה
+            savedDescription = this.value;
             
             // שינוי צבע כשמתקרבים למגבלה
             if (length > 180) {
