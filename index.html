@@ -70,12 +70,13 @@
         
         .time-display {
             font-family: 'Courier New', monospace;
-            font-size: 3rem;
+            font-size: 5rem;
             font-weight: bold;
-            margin: 20px 0;
-            text-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+            margin: 30px 0;
+            text-shadow: 0 0 30px rgba(0, 255, 65, 0.8);
             position: relative;
             z-index: 1;
+            line-height: 1.2;
         }
         
         .time-units {
@@ -107,7 +108,65 @@
             margin-top: 5px;
         }
         
-        .target-time {
+        .description-box {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .description-box textarea {
+            width: 100%;
+            max-width: 500px;
+            height: 80px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .description-box textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+        
+        .char-counter {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .char-counter.warning {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .description-display {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            font-size: 1.1rem;
+            color: #333;
+            display: none;
+            line-height: 1.6;
+        }
+        
+        .description-display.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
             color: #666;
             font-size: 1.2rem;
             margin: 20px 0;
@@ -175,16 +234,7 @@
             }
             
             .time-display {
-                font-size: 2rem;
-            }
-            
-            .time-units {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .time-number {
-                font-size: 1.5rem;
+                font-size: 3rem;
             }
         }
     </style>
@@ -194,31 +244,19 @@
         <div class="icon">⏰</div>
         <h1>שעון ספירה לאחור</h1>
         
+        <div class="description-box">
+            <textarea id="description" placeholder="הוסף תיאור לשעון (למשל: עד סיום המבצע, עד תחילת האירוע, וכו')" maxlength="200"></textarea>
+            <div class="char-counter"><span id="char-count">0</span>/200 תווים</div>
+        </div>
+        
         <div class="target-time">
             🎯 יעד: היום בשעה 23:59:59
         </div>
         
+        <div class="description-display" id="description-display"></div>
+        
         <div class="countdown-main">
             <div class="time-display" id="main-display">טוען...</div>
-            
-            <div class="time-units">
-                <div class="time-unit">
-                    <span class="time-number" id="hours">00</span>
-                    <div class="time-label">שעות</div>
-                </div>
-                <div class="time-unit">
-                    <span class="time-number" id="minutes">00</span>
-                    <div class="time-label">דקות</div>
-                </div>
-                <div class="time-unit">
-                    <span class="time-number" id="seconds">00</span>
-                    <div class="time-label">שניות</div>
-                </div>
-                <div class="time-unit">
-                    <span class="time-number" id="milliseconds">000</span>
-                    <div class="time-label">אלפיות</div>
-                </div>
-            </div>
         </div>
         
         <div class="status-message" id="status">מחשב...</div>
@@ -250,10 +288,6 @@
             if (diff <= 0) {
                 // הזמן הגיע!
                 document.getElementById('main-display').textContent = '🎉 הזמן הגיע! 🎉';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                document.getElementById('milliseconds').textContent = '000';
                 
                 const statusEl = document.getElementById('status');
                 statusEl.textContent = '🏁 הספירה הסתיימה! מחר נתחיל מחדש 🏁';
@@ -265,16 +299,10 @@
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            const milliseconds = Math.floor(diff % 1000);
             
-            // עדכון התצוגה
+            // עדכון התצוגה הראשית בלבד
             document.getElementById('main-display').textContent = 
                 `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            
-            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-            document.getElementById('milliseconds').textContent = String(milliseconds).padStart(3, '0');
             
             // עדכון הודעת מצב
             const statusEl = document.getElementById('status');
@@ -299,6 +327,32 @@
         
         // עדכון ראשוני
         updateCountdown();
+        
+        // טיפול בתיבת התיאור
+        const descriptionTextarea = document.getElementById('description');
+        const charCount = document.getElementById('char-count');
+        const charCounter = document.querySelector('.char-counter');
+        const descriptionDisplay = document.getElementById('description-display');
+        
+        descriptionTextarea.addEventListener('input', function() {
+            const length = this.value.length;
+            charCount.textContent = length;
+            
+            // שינוי צבע כשמתקרבים למגבלה
+            if (length > 180) {
+                charCounter.classList.add('warning');
+            } else {
+                charCounter.classList.remove('warning');
+            }
+            
+            // הצגת התיאור מתחת לתיבת הטקסט
+            if (this.value.trim()) {
+                descriptionDisplay.textContent = this.value;
+                descriptionDisplay.classList.add('show');
+            } else {
+                descriptionDisplay.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>
