@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>שעון ספירה לאחור - עד סוף יום רביעי</title>
-    <meta name="description" content="שעון ספירה לאחור עד יום רביעי בשעה 23:00">
+    <title>שעון ספירה לאחור - עד סוף היום</title>
+    <meta name="description" content="שעון ספירה לאחור עד היום בשעה 23:59">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -305,7 +305,7 @@
         <h1>סרטון ברכה לרגל 25 שנות נישואין</h1>
         
         <div class="target-time">
-            🎯 יעד: מחר בשעה 23:00:00
+            🎯 יעד: היום בשעה 23:00:00
         </div>
         
         <div class="names-list">
@@ -319,8 +319,8 @@
                     <span class="status-icon">❌</span>
                     <span class="name">מוישי</span>
                 </div>
-                <div class="name-item pending">
-                    <span class="status-icon">❌</span>
+                <div class="name-item completed">
+                    <span class="status-icon">✅</span>
                     <span class="name">יהודה</span>
                 </div>
                 <div class="name-item pending">
@@ -357,23 +357,38 @@
         function updateCountdown() {
             const now = new Date();
             
-            // יצירת תאריך היעד - מחר בשעה 23:00:00
+            // יצירת תאריך היעד - היום בשעה 23:00:00
             const target = new Date();
-            target.setDate(target.getDate() + 1); // מחר
             target.setHours(23, 0, 0, 0); // 23:00:00
+            
+            // אם עבר הזמן היעד (אחרי 23:00), עבור ליום הבא
+            if (now > target) {
+                target.setDate(target.getDate() + 1);
+            }
             
             const diff = target.getTime() - now.getTime();
             
-            // עדכון השעה הנוכחית
+            // עדכון השעה הנוכחית ותאריך היעד
             const currentTimeStr = now.toLocaleTimeString('he-IL');
+            const targetDateStr = target.toLocaleDateString('he-IL');
+            const targetTimeStr = target.toLocaleTimeString('he-IL');
+            
             document.getElementById('current-time').textContent = currentTimeStr;
+            
+            // עדכון תצוגת היעד עם התאריך המדויק
+            const targetDisplay = document.querySelector('.target-time');
+            if (target.getDate() === now.getDate()) {
+                targetDisplay.innerHTML = `🎯 יעד: היום בשעה ${targetTimeStr}`;
+            } else {
+                targetDisplay.innerHTML = `🎯 יעד: ${targetDateStr} בשעה ${targetTimeStr}`;
+            }
             
             if (diff <= 0) {
                 // הזמן הגיע!
                 document.getElementById('main-display').textContent = '🎉 הזמן הגיע! 🎉';
                 
                 const statusEl = document.getElementById('status');
-                statusEl.textContent = '🏁 הספירה הסתיימה! מחר נתחיל מחדש 🏁';
+                statusEl.textContent = '🏁 הספירה הסתיימה! 🏁';
                 statusEl.className = 'status-message finished';
                 return;
             }
