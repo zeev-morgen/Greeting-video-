@@ -305,7 +305,7 @@
         <h1>סרטון ברכה לרגל 25 שנות נישואין</h1>
         
         <div class="target-time">
-            🎯 יעד: היום בשעה 23:59:59
+            🎯 יעד: מחר בשעה 23:00:00
         </div>
         
         <div class="names-list">
@@ -357,14 +357,10 @@
         function updateCountdown() {
             const now = new Date();
             
-            // יצירת תאריך היעד - היום בשעה 23:59:59
+            // יצירת תאריך היעד - מחר בשעה 23:00:00
             const target = new Date();
-            target.setHours(23, 59, 59, 999);
-            
-            // אם עבר הזמן היעד, עבור ליום הבא
-            if (now > target) {
-                target.setDate(target.getDate() + 1);
-            }
+            target.setDate(target.getDate() + 1); // מחר
+            target.setHours(23, 0, 0, 0); // 23:00:00
             
             const diff = target.getTime() - now.getTime();
             
