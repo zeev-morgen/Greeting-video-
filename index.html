@@ -244,16 +244,13 @@
         <div class="icon">⏰</div>
         <h1>שעון ספירה לאחור</h1>
         
-        <div class="description-box">
-            <textarea id="description" placeholder="הוסף תיאור לשעון (למשל: עד סיום המבצע, עד תחילת האירוע, וכו')" maxlength="200"></textarea>
-            <div class="char-counter"><span id="char-count">0</span>/200 תווים</div>
+        <div class="description-display show">
+            סרטון ברכה לרגל 25 שנות נישואין
         </div>
         
         <div class="target-time">
             🎯 יעד: היום בשעה 23:59:59
         </div>
-        
-        <div class="description-display" id="description-display"></div>
         
         <div class="countdown-main">
             <div class="time-display" id="main-display">טוען...</div>
@@ -327,38 +324,6 @@
         
         // עדכון ראשוני
         updateCountdown();
-        
-        // טיפול בתיבת התיאור
-        const descriptionTextarea = document.getElementById('description');
-        const charCount = document.getElementById('char-count');
-        const charCounter = document.querySelector('.char-counter');
-        const descriptionDisplay = document.getElementById('description-display');
-        
-        // משתנה לשמירת התיאור (רק במהלך הסשן)
-        let savedDescription = '';
-        
-        descriptionTextarea.addEventListener('input', function() {
-            const length = this.value.length;
-            charCount.textContent = length;
-            
-            // שמירה במשתנה
-            savedDescription = this.value;
-            
-            // שינוי צבע כשמתקרבים למגבלה
-            if (length > 180) {
-                charCounter.classList.add('warning');
-            } else {
-                charCounter.classList.remove('warning');
-            }
-            
-            // הצגת התיאור מתחת לתיבת הטקסט
-            if (this.value.trim()) {
-                descriptionDisplay.textContent = this.value;
-                descriptionDisplay.classList.add('show');
-            } else {
-                descriptionDisplay.classList.remove('show');
-            }
-        });
     </script>
 </body>
 </html>
