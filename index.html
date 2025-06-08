@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>שעון ספירה לאחור - עד סוף היום</title>
-    <meta name="description" content="שעון ספירה לאחור עד היום בשעה 23:59">
+    <title>שעון ספירה לאחור - עד סוף יום ראשון</title>
+    <meta name="description" content="שעון ספירה לאחור עד היום בשעה 22:00">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -378,13 +378,8 @@
         
         document.getElementById('current-time').textContent = currentTimeStr;
         
-        // הסתרת התצוגה הדינמית של היעד כי עכשיו יש תצוגה קבועה
-        // const targetDisplay = document.querySelector('.target-time');
-        // if (target.getDate() === now.getDate()) {
-        //     targetDisplay.innerHTML = `🎯 יעד: היום בשעה ${targetTimeStr}`;
-        // } else {
-        //     targetDisplay.innerHTML = `🎯 יעד: ${targetDateStr} בשעה ${targetTimeStr}`;
-        // }
+        // הסרת התצוגה הדינמית - נשאר רק התאריך הקבוע למעלה
+        // targetDisplay.innerHTML = `🎯 ספירה לאחור עד: יום ראשון 8/6/25 22:00`;
         
         if (diff <= 0) {
             // הזמן הגיע!
