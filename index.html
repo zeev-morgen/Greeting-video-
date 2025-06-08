@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>שעון ספירה לאחור - עד סוף היום</title>
-    <meta name="description" content="שעון ספירה לאחור עד היום בשעה 22:00">
+    <meta name="description" content="שעון ספירה לאחור עד היום בשעה 23:59">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -347,8 +347,8 @@
         </div>
     </div>
     
-    <div class="target-date">
-        📅 יום ראשון 8/6/25 22:00
+    <div class="target-time">
+        🎯 יעד: יום ראשון 8/6/25 22:00
     </div>
     
     <div class="countdown-main">
@@ -378,8 +378,9 @@
         
         document.getElementById('current-time').textContent = currentTimeStr;
         
-        // הסרת התצוגה הדינמית - נשאר רק התאריך הקבוע למעלה
-        // targetDisplay.innerHTML = `🎯 ספירה לאחור עד: יום ראשון 8/6/25 22:00`;
+        // עדכון תצוגת היעד - חזרה לתצוגה הדינמית
+        const targetDisplay = document.querySelector('.target-time');
+        targetDisplay.innerHTML = `🎯 ספירה לאחור עד: יום ראשון 8/6/25 22:00`;
         
         if (diff <= 0) {
             // הזמן הגיע!
