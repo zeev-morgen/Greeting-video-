@@ -66,6 +66,10 @@
         border: 2px solid rgba(0, 255, 65, 0.2);
         position: relative;
         overflow: hidden;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .countdown-main::before {
@@ -93,6 +97,8 @@
         position: relative;
         z-index: 1;
         line-height: 1.2;
+        text-align: center;
+        width: 100%;
     }
     
     .status-message {
@@ -195,7 +201,12 @@
     .icon {
         font-size: 3rem;
         margin-bottom: 20px;
-        animation: rotate 4s linear infinite;
+        animation: blink 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes blink {
+        0%, 50% { opacity: 1; }
+        25%, 75% { opacity: 0.3; }
     }
     
     @keyframes rotate {
